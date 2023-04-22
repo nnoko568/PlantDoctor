@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "918451630810",
+    "project_id": "plant-doctor-3c3dc",
+    "storage_bucket": "plant-doctor-3c3dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918451630810:android:fa256dcf1318a5fcb36be3",
+        "android_client_info": {
+          "package_name": "com.example.plant_doctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918451630810-s3dqvj6ih022neqecc5ch0o71ameg18s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3pC-lnshxE-lAP9kwNeZ1dJrXqCQQHSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918451630810-s3dqvj6ih022neqecc5ch0o71ameg18s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
