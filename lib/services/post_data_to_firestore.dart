@@ -9,16 +9,12 @@ import '../widgets/home.dart';
 class PostDataToFirestore {
   Future<void> postDetailsToFirestore(String firstName, String lastName,
       String email, BuildContext context) async {
-    // calling our firestore
-    // calling our user provider
-    // sending these values
     final _auth = FirebaseAuth.instance;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
     Users users = Users();
 
-    // writing all the values
     users.firstName = firstName;
     users.lastName = lastName;
     users.email = email;
@@ -27,9 +23,13 @@ class PostDataToFirestore {
         .collection("users")
         .doc(user!.uid)
         .set(users.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully :)");
 
-    Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => Home()), (route) => false);
+    Navigator.pushAndRemoveUntil(
+      (context),
+      MaterialPageRoute(builder: (context) => Home()),
+      (route) => false,
+    );
+
+    Fluttertoast.showToast(msg: "Account created successfully :)");
   }
 }

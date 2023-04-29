@@ -189,7 +189,7 @@ class _FormScreenState extends State<FormScreen> {
                     style: TextStyle(fontSize: 25.0),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

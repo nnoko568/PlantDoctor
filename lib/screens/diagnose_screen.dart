@@ -68,7 +68,7 @@ class DiagnoseScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      'This is just some random text that I am putting here to fill up space so that it should look like actual text that make sense. Hahahahaha I sorry who ever will think the text here makes sence. Kawabanga :)',
+                      'The earliest symptoms of late blight are going to be irregularly shaped gray and yellow spots on the leaves and on the stem of your plant. A fuzzy white mold might also appear around those spots.',
                       style: TextStyle(
                         fontSize: 20.0,
                         height: 1.3,
@@ -86,7 +86,7 @@ class DiagnoseScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      'This is just some random text that I am putting here to fill up space so that it should look like actual text that make sense. Hahahahaha I sorry who ever will think the text here makes sence. Kawabanga :)',
+                      'Late Blight is caused by a fungus, phytophthora infestans. It’s a fungus that has adapted for growth where water is present and cool temperatures persist. The moist conditions allow spores to spread among plants by splashing rain, overhead irrigation, and wind.',
                       style: TextStyle(
                         fontSize: 20.0,
                         height: 1.3,
@@ -103,7 +103,7 @@ class DiagnoseScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      '1) This another of some of my random text that I like to use to fill up space in my flutter app. Kawabanga :)',
+                      '1. Keep the plant as dry as possible. Use something like drip irrigation near the base of the plant or water with a hose directly at the base instead of from above the whole plant.',
                       style: TextStyle(
                         fontSize: 20.0,
                         height: 1.3,
@@ -113,7 +113,7 @@ class DiagnoseScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      '2) This another of some of my random text that I like to use to fill up space in my flutter app. Kawabanga :)',
+                      '2. Uproot and quickly dispose of any infected plants in your garden. You can bury them deep in the soil outside of your garden or put them into your garbage can.',
                       style: TextStyle(
                         fontSize: 20.0,
                         height: 1.3,
@@ -123,7 +123,7 @@ class DiagnoseScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      '3) This another of some of my random text that I like to use to fill up space in my flutter app. Kawabanga :)',
+                      '3. Look for late-blight resistant varieties of tomatoes.',
                       style: TextStyle(
                         fontSize: 20.0,
                         height: 1.3,
@@ -133,7 +133,7 @@ class DiagnoseScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      '4) This another of some of my random text that I like to use to fill up space in my flutter app. Kawabanga :)',
+                      '4. Use a fungicide that contains bacillus subtillis, a bacterium that will stay in your soil and control several different diseases for an extended period of time.',
                       style: TextStyle(
                         fontSize: 20.0,
                         height: 1.3,

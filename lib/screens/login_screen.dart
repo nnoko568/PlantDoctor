@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../helpers/app_color.dart';
 import '../widgets/custom_text_field.dart';
 import '../screens/signup_screen.dart';
+import '../widgets/home.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -12,9 +15,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  GlobalKey _key = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
-  TextEditingController phoneNumberEditingController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+
+  TextEditingController emailEditingController = TextEditingController();
 
   TextEditingController passwordEditingController = TextEditingController();
 
@@ -31,28 +37,28 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _key,
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/plant-doctor.png'),
-                  ),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.3,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/plant-doctor.png'),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     CustomTextField(
-                      editingController: phoneNumberEditingController,
-                      placeHolder: 'Phone Number',
+                      editingController: emailEditingController,
+                      placeHolder: 'Email',
                       isObscure: false,
-                      textInputType: TextInputType.number,
+                      textInputType: TextInputType.emailAddress,
                     ),
                     CustomTextField(
                       editingController: passwordEditingController,
@@ -70,11 +76,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           backgroundColor: AppColor.mainColor,
                         ),
-                        onPressed: () {},
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(fontSize: 25.0),
-                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          signIn(
+                            emailEditingController.text,
+                            passwordEditingController.text,
+                          ).then((_) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          });
+                        },
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Login',
+                                style: TextStyle(fontSize: 25.0),
+                              ),
                       ),
                     ),
                     Row(
@@ -106,11 +128,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> signIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then(
+        (uid) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (conext) {
+                return Home();
+              },
+            ),
+          );
+          Fluttertoast.showToast(msg: 'Login Successfull');
+        },
+      );
+    }
   }
 }

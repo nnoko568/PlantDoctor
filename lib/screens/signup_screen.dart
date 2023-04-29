@@ -15,7 +15,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool isLoading = false;
+  bool _isLoading = false;
 
   final _auth = FirebaseAuth.instance;
 
@@ -102,23 +102,26 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isLoading = true;
+                            _isLoading = true;
                           });
                           signUp(
                             emailEditingController.text,
                             passwordEditingController.text,
+                          ).then(
+                            (_) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            },
                           );
-                          setState(() {
-                            isLoading = false;
-                          });
                         },
-                        child: !isLoading
-                            ? const Text(
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
                                 'Sign up',
                                 style: TextStyle(fontSize: 25.0),
-                              )
-                            : const CircularProgressIndicator(
-                                color: Colors.white,
                               ),
                       ),
                     ),

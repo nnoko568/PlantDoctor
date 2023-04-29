@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../helpers/app_color.dart';
+import '../widgets/home.dart';
+import '../models/users.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
 
-  final _auth = FirebaseAuth.instance;
-
-  static const List<String> userInfo = [
-    'Ajong',
-    'Trevor',
-    'trevor.ajong@gmail.com',
+  static final List<String> userInfo = [
+    'John',
+    'Doe',
+    'johndeo@gmail.com',
     '*********'
   ];
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  User? users = FirebaseAuth.instance.currentUser;
+  Users loggedInUser = Users();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance.collection('users').doc(users!.uid).get().then(
+      (value) {
+        loggedInUser = Users.fromMap(value.data());
+      },
+    );
+  }
 
   final List<Icon> userInforIcon = const [
     Icon(
@@ -39,8 +60,15 @@ class ProfileScreen extends StatelessWidget {
     ),
   ];
 
-  void logout() {
+  void logout(BuildContext context) {
     _auth.signOut();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return Home();
+        },
+      ),
+    );
     Fluttertoast.showToast(msg: 'logout successful!');
   }
 
@@ -81,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.5,
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ListView.builder(
-              itemCount: userInfo.length,
+              itemCount: ProfileScreen.userInfo.length,
               itemBuilder: (context, index) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -96,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                               userInforIcon[index],
                               const SizedBox(width: 20),
                               Text(
-                                userInfo[index],
+                                ProfileScreen.userInfo[index],
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: index == 3
@@ -120,7 +148,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           TextButton.icon(
-            onPressed: logout,
+            onPressed: () => logout(context),
             icon: Icon(
               Icons.logout,
               color: AppColor.mainColor,
