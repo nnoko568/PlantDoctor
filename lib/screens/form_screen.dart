@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/custom_text_field.dart';
 import '../helpers/app_color.dart';
 import 'diagnose_screen.dart';
 import '../widgets/user_image_picker.dart';
+import 'login_screen.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -33,6 +35,45 @@ class _FormScreenState extends State<FormScreen> {
         _seasonDropdownValue = selectedValue;
       });
     }
+  }
+
+  void showAlertBox() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("You're logged out!"),
+          content: Text('Login to get the diagnosis of your plant'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: AppColor.mainColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'No',
+                style: TextStyle(color: AppColor.mainColor),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -170,13 +211,21 @@ class _FormScreenState extends State<FormScreen> {
               const UserImagePicker(),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const DiagnoseScreen();
-                      },
-                    ),
+                  FirebaseAuth.instance.idTokenChanges().listen(
+                    (User? user) {
+                      if (user == null) {
+                        showAlertBox();
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const DiagnoseScreen();
+                            },
+                          ),
+                        );
+                      }
+                    },
                   );
                 },
                 style: ElevatedButton.styleFrom(

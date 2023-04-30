@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../helpers/app_color.dart';
-import '../screens/diagnose_screen.dart';
+import 'diagnose_screen.dart';
+import 'login_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -21,9 +23,50 @@ class _CameraScreenState extends State<CameraScreen> {
     Future<void> _pickImage() async {
       ImagePicker picker = ImagePicker();
       final photo = await picker.pickImage(source: ImageSource.camera);
-      setState(() {
-        _selectedPickedImage = photo;
-      });
+      setState(
+        () {
+          _selectedPickedImage = photo;
+        },
+      );
+    }
+
+    void showAlertBox() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("You're logged out!"),
+            content: Text('Login to get the diagnosis of your plant'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, true);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(color: AppColor.mainColor),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'No',
+                  style: TextStyle(color: AppColor.mainColor),
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
 
     return Scaffold(
@@ -74,12 +117,21 @@ class _CameraScreenState extends State<CameraScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const DiagnoseScreen();
-                                },
-                              ),
+                            FirebaseAuth.instance.idTokenChanges().listen(
+                              (User? user) {
+                                if (user == null) {
+                                  showAlertBox();
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const DiagnoseScreen();
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
                             );
                           },
                           child: const Text(
